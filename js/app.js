@@ -16,10 +16,15 @@ const echoServer = new Echo({
 
 // EVENT_NAME same as event class name without `broadcastAs` method
 echoServer.listen('CHANNEL_NAME', 'EVENT_NAME', (res) => {
-    console.log(res);
+    const currentTime = new Date().toLocaleString();
+
+    const jsonCode = document.querySelector('#jsonCode');
+    jsonCode.textContent += '// ' + currentTime + ' Received:\n' + JSON.stringify(res, null, 2) + '\n\n';
+
+    Prism.highlightElement(jsonCode);
 });
 
 // if event class defined a name through `broadcastAs` method, then EVENT_NAME need add `.` prefix
-echoServer.listen('CHANNEL_NAME', '.EVENT_NAME', (res) => {
-    console.log(res);
-});
+// echoServer.listen('CHANNEL_NAME', '.EVENT_NAME', (res) => {
+//     console.log(res);
+// });
