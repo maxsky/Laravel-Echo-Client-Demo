@@ -1,26 +1,25 @@
-import io from 'socket.io-client';
 import Echo from 'laravel-echo';
 
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
+import Pusher from 'pusher-js';
 
-window.io = io
+window.Pusher = Pusher;
 
-window.Echo = new Echo({
-    broadcaster: 'socket.io',
-    host: 'http://127.0.0.1:6001',
-    auth: {
-        headers: {
-            'User-Agent': navigator.userAgent
-        }
-    },
-    bearerToken: '',
-    namespace: null // only for used `broadcastAs` method
+const echoServer = new Echo({
+    broadcaster: 'reverb',
+    key: 'REVERB_APP_KEY', // import.meta.env.VITE_REVERB_APP_KEY,
+    wsHost: 'localhost', // import.meta.env.VITE_REVERB_HOST,
+    wsPort: 8080, // import.meta.env.VITE_REVERB_PORT,
+    wssPort: 8080, // import.meta.env.VITE_REVERB_PORT,
+    forceTLS: false, // (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
+    enabledTransports: ['ws', 'wss'],
 });
 
-window.Echo.channel('Channel_Name').listen('ExampleEvent', (res) => {
+// EVENT_NAME same as event class name without `broadcastAs` method
+echoServer.listen('CHANNEL_NAME', 'EVENT_NAME', (res) => {
+    console.log(res);
+});
+
+// if event class defined a name through `broadcastAs` method, then EVENT_NAME need add `.` prefix
+echoServer.listen('CHANNEL_NAME', '.EVENT_NAME', (res) => {
     console.log(res);
 });
