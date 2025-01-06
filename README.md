@@ -1,6 +1,6 @@
 # Laravel-Echo-Client-Demo
 
-For Debug Laravel Echo Server
+For Debug Laravel Echo/Reverb Server
 
 用于调试 Laravel/Lumen WebSocket 即时通讯服务
 
